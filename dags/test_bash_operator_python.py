@@ -1,11 +1,11 @@
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from datetime import datetime, timedelta
+from datetime import timedelta
 import pendulum
 import scripts.test_print_script as test_print_script
 
 now = pendulum.now(tz="UTC")
-now_to_the_hour = (now - datetime.timedelta(0, 0, 0, 0, 0, 3)).replace(minute=0, second=0, microsecond=0)
+now_to_the_hour = (now - timedelta(0, 0, 0, 0, 0, 3)).replace(minute=0, second=0, microsecond=0)
 # start date to be recent one and should be executed on the same day
 START_DATE = now_to_the_hour
 DAG_NAME = "test_empty_operator"

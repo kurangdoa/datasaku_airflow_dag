@@ -4,7 +4,7 @@ from airflow.operators.empty import EmptyOperator
 from airflow.operators.bash import BashOperator
 
 with DAG(
-    dag_id = "my_dag",
+    dag_id = "test_bash_operator",
     start_date = pendulum.datetime(2023, 3, 1),
     # run every hour
     schedule = "0 * * * *",

@@ -1,13 +1,13 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-from datetime import datetime, timedelta
+from datetime import timedelta
 import pendulum
 
 now = pendulum.now(tz="UTC")
-now_to_the_hour = (now - datetime.timedelta(0, 0, 0, 0, 0, 3)).replace(minute=0, second=0, microsecond=0)
+now_to_the_hour = (now - timedelta(0, 0, 0, 0, 0, 3)).replace(minute=0, second=0, microsecond=0)
 # start date to be recent one and should be executed on the same day
 START_DATE = now_to_the_hour
-DAG_NAME = "test_empty_operator"
+DAG_NAME = "test_python_operator"
 
 dag = DAG(
     DAG_NAME,
@@ -18,7 +18,7 @@ dag = DAG(
     catchup=False,
 )
 
-@task(task_id="test_python_operator")
+@task(task_id="task1")
 def print_context(ds=None, **kwargs):
     """Print the Airflow context and ds variable from the context."""
     print(kwargs)
