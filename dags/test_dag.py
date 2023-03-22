@@ -14,7 +14,7 @@ with DAG(
     task1 = EmptyOperator(task_id="task1")
     task2 = EmptyOperator(task_id="task2")
     task3 = EmptyOperator(task_id="task3")
-    op = BashOperator(task_id="dummy", bash_command="Hello World!")
+    op = BashOperator(task_id="dummy", bash_command='echo "hello world!"')
     print(op.retries)  # 2
 
     task1 >> [task2, task3]
