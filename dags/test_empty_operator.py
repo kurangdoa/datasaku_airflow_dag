@@ -7,15 +7,16 @@ from airflow.operators.empty import EmptyOperator
 
 now = pendulum.now(tz="UTC")
 now_to_the_hour = (now - datetime.timedelta(0, 0, 0, 0, 0, 3)).replace(minute=0, second=0, microsecond=0)
+# start date to be recent one and should be executed on the same day
 START_DATE = now_to_the_hour
-DAG_NAME = "test_dag_gitsync"
+DAG_NAME = "test_empty_operator"
 
 dag = DAG(
     DAG_NAME,
     # run every 10 minutes
     schedule="*/10 * * * *",
     default_args={"depends_on_past": True},
-    start_date=pendulum.datetime(2021, 1, 1, tz="UTC"),
+    start_date=START_DATE,
     catchup=False,
 )
 

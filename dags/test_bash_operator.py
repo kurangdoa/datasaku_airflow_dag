@@ -4,12 +4,14 @@ from airflow.operators.empty import EmptyOperator
 from airflow.operators.bash import BashOperator
 
 with DAG(
-    dag_id="my_dag",
-    start_date=pendulum.datetime(2023, 1, 1),
+    dag_id = "my_dag",
+    start_date = pendulum.datetime(2023, 3, 1),
     # run every hour
-    schedule="0 * * * *",
+    schedule = "0 * * * *",
     # default arguments to be used in every task
-    default_args={"retries": 2},
+    default_args = {"retries": 2},
+    # make sure it does not run the backfill
+    catchup = False,
 ):
     task1 = EmptyOperator(task_id="task1")
     task2 = EmptyOperator(task_id="task2")
