@@ -8,7 +8,7 @@ now = pendulum.now(tz="UTC")
 now_to_the_hour = (now - timedelta(0, 0, 0, 0, 0, 3)).replace(minute=0, second=0, microsecond=0)
 # start date to be recent one and should be executed on the same day
 START_DATE = now_to_the_hour
-DAG_NAME = "test_empty_operator"
+DAG_NAME = "test_bash_operator_python"
 
 with DAG(
     DAG_NAME,
@@ -22,3 +22,5 @@ with DAG(
         task_id='testairflow',
         bash_command='python /home/airflow/airflow/dags/scripts/test_print_script.py'
     )
+
+    t1
