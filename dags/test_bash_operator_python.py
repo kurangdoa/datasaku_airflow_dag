@@ -1,5 +1,5 @@
 from airflow import DAG
-from airflow.operators import BashOperator
+from airflow.operators.bash import BashOperator
 from datetime import datetime, timedelta
 import pendulum
 import scripts.test_print_script as test_print_script
