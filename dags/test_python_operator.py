@@ -27,7 +27,6 @@ with DAG(
         task_id='print_the_context',
         provide_context=True,
         python_callable=print_context,
-        dag=dag,
     )
 
     run_this
