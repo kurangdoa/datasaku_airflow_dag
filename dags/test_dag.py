@@ -6,7 +6,9 @@ from airflow.operators.bash import BashOperator
 with DAG(
     dag_id="my_dag",
     start_date=pendulum.datetime(2016, 1, 1),
-    schedule="* * * * *",
+    # run every hour
+    schedule="0 * * * *",
+    # default arguments to be used in every task
     default_args={"retries": 2},
 ):
     task1 = EmptyOperator(task_id="task1")
