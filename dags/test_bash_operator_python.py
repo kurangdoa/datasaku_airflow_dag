@@ -20,7 +20,7 @@ with DAG(
 ):
     t1 = BashOperator(
         task_id='testairflow',
-        bash_command='python  ~/scripts/test_print_script.py'
+        bash_command='python  /opt/airflow/dags/dags/scripts/test_print_script.py'
     )
 
     t1
