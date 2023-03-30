@@ -9,3 +9,4 @@ print(end_date)
 
 logging.info("start_date: %s", start_date)
 logging.info("end_date: %s", end_date)
+logging.info("end test")
