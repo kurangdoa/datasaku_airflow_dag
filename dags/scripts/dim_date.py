@@ -6,8 +6,6 @@ import pendulum
 import logging
 import os
 
-logger = logging.getLogger("airflow.task")
-
 
 def ordinal(num: int) -> str:
     """
@@ -407,7 +405,7 @@ def transform_date(start_date: str, end_date: str) -> pd.DataFrame:
     )
     df.loc[:, ["datetime_unix"]] = df.loc[:, ["datetime_unix"]].astype(np.int64)
 
-    return logger.info(df.head())
+    return df
 
     # df = spark.createDataFrame(df)
 
@@ -423,4 +421,9 @@ def transform_date(start_date: str, end_date: str) -> pd.DataFrame:
 start_date = os.environ.get('start_date')
 end_date = os.environ.get('end_date')
 
-transform_date(start_date, end_date)
+df = transform_date(start_date, end_date)
+
+logger = logging.getLogger("airflow.task")
+logger.info("start_date: %s", start_date)
+logger.info("end_date: %s", end_date)
+logger.info(df.head())
