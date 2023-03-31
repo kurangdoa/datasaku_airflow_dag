@@ -20,7 +20,7 @@ with DAG(
 ):
     t1 = BashOperator(
         task_id='testairflow'
-        , bash_command="""python  /opt/airflow/dags/repo/dags/scripts/test_print_script.py 
+        , bash_command="""python  /opt/airflow/dags/repo/dags/scripts/dim_date.py 
                         --start_date {{ params.start_date }} --end_date {{ params.end_date }}"""
         , params = {'start_date' : '2023-01-01', 'end_date' : '2023-01-31'}
     )
