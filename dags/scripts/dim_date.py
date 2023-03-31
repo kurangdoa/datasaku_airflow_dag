@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import pendulum
 import logging
+import os
 
 logger = logging.getLogger("airflow.task")
 
@@ -418,3 +419,8 @@ def transform_date(start_date: str, end_date: str) -> pd.DataFrame:
     #         for column__, type__ in df.dtypes
     #     ]
     # )
+
+start_date = os.environ.get('start_date')
+end_date = os.environ.get('end_date')
+
+transform_date(start_date, end_date)
