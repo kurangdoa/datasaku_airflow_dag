@@ -5,7 +5,7 @@ import pandas as pd
 import pendulum
 import logging
 import os
-
+from airflow.utils.log.logging_mixin import LoggingMixin
 
 def ordinal(num: int) -> str:
     """
@@ -427,3 +427,7 @@ logger = logging.getLogger("airflow.task")
 logger.info("start_date: %s", start_date)
 logger.info("end_date: %s", end_date)
 logger.info(df.head())
+
+LoggingMixin().log.info("start_date: %s", start_date)
+LoggingMixin().log.info("end_date: %s", end_date)
+LoggingMixin().log.info(df.head())
