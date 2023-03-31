@@ -3,7 +3,6 @@ import math
 import numpy as np
 import pandas as pd
 import pendulum
-import logging
 import os
 from airflow.utils.log.logging_mixin import LoggingMixin
 
@@ -422,11 +421,6 @@ start_date = os.environ.get('start_date')
 end_date = os.environ.get('end_date')
 
 df = transform_date(start_date, end_date)
-
-logger = logging.getLogger("airflow.task")
-logger.info("start_date: %s", start_date)
-logger.info("end_date: %s", end_date)
-logger.info(df.head())
 
 LoggingMixin().log.info("start_date: %s", start_date)
 LoggingMixin().log.info("end_date: %s", end_date)
