@@ -36,7 +36,7 @@ def ordinal(num: int) -> str:
     return str(num) + ordinal
 
 
-def transform_date(start_date: str, end_date: str) -> DataFrame:
+def transform_date(start_date: str, end_date: str) -> pd.DataFrame:
     """
     Transform the date dataframe from scratch.
 
