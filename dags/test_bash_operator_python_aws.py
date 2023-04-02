@@ -8,7 +8,7 @@ now = pendulum.now(tz="UTC")
 now_to_the_hour = (now - timedelta(0, 0, 0, 0, 0, 3)).replace(minute=0, second=0, microsecond=0)
 # start date to be recent one and should be executed on the same day
 START_DATE = now_to_the_hour
-DAG_NAME = "test_bash_operator_python"
+DAG_NAME = "test_bash_operator_python_aws_s3"
 
 with DAG(
     DAG_NAME,
@@ -19,8 +19,8 @@ with DAG(
     catchup=False,
 ):
     t1 = BashOperator(
-        task_id='test_python_bash',
-        bash_command='python  /opt/airflow/dags/repo/dags/scripts/test_print_script.py'
+        task_id='test_aws_s3',
+        bash_command='python  /opt/airflow/dags/repo/dags/scripts/test_aws_s3.py'
     )
 
     t1
