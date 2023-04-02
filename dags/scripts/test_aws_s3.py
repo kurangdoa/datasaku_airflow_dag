@@ -24,4 +24,4 @@ class ConnS3:
         buckets = [bucket.name for bucket in s3_resource.buckets.all()] # list down the bucket
         return buckets
 
-LoggingMixin().log.info(ConnS3().s3_list_bucket())
+LoggingMixin().log.info(ConnS3(aws_access_key_id = None, aws_secret_access_key = None).s3_list_bucket())
