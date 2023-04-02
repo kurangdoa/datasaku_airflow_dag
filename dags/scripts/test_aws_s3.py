@@ -24,7 +24,7 @@ class ConnS3:
         buckets = [bucket.name for bucket in s3_resource.buckets.all()] # list down the bucket
         return buckets
 
-boto = ConnS3(aws_access_key_id = 'AKIARRZC2LLJLYNONUUA', aws_secret_access_key = '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')
+boto = ConnS3(aws_access_key_id = 'AKIARRZC2LLJLYNONUUA', aws_secret_access_key = '1Vf0jXnItOJqj6ygKWUL\+b6FloXgjm6nbIDSL94H')
 my_bucket = boto.s3_list_bucket()
 
 LoggingMixin().log.info(my_bucket)
