@@ -27,8 +27,8 @@ class ConnS3:
         return buckets
 
 
-conn = BaseHook.get_connection('aws_default')
-LoggingMixin().log.info(conn.get_extra())
-boto = ConnS3(aws_access_key_id = Variable.get("aws_secret"), aws_secret_access_key = Variable.get("aws_key"))
+# conn = BaseHook.get_connection('aws_default')
+# LoggingMixin().log.info(conn.get_extra())
+boto = ConnS3(aws_access_key_id = Variable.get("AWS_SECRET"), aws_secret_access_key = Variable.get("AWS_KEY"))
 my_bucket = boto.s3_list_bucket()
 LoggingMixin().log.info(my_bucket)
