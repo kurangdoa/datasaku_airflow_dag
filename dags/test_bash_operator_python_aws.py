@@ -13,7 +13,7 @@ DAG_NAME = "test_bash_operator_python_aws_s3"
 with DAG(
     DAG_NAME,
     # run every hour
-    schedule="0 * * * *",
+    schedule="0 0 * * *",
     default_args={"depends_on_past": True},
     start_date=START_DATE,
     catchup=False,
