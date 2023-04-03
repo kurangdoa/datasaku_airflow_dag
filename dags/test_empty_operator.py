@@ -15,7 +15,7 @@ dag = DAG(
     DAG_NAME,
     # run every 10 minutes
     schedule="*/10 * * * *",
-    default_args={"depends_on_past": True},
+    default_args={"depends_on_past": False},
     start_date=START_DATE,
     catchup=False,
 )

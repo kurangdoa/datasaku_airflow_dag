@@ -13,7 +13,7 @@ with DAG(
     DAG_NAME,
     # run every hour
     schedule="0 * * * *",
-    default_args={"depends_on_past": True},
+    default_args={"depends_on_past": False},
     start_date=START_DATE,
     catchup=False,
 ):
