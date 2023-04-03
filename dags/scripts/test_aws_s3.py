@@ -1,6 +1,7 @@
 import boto3
 from airflow.utils.log.logging_mixin import LoggingMixin
 from airflow.hooks.base import BaseHook
+from airflow.models import Variable
 
 class ConnS3:
     """Class for S3"""
@@ -28,7 +29,6 @@ class ConnS3:
 
 conn = BaseHook.get_connection('aws_default')
 LoggingMixin().log.info(conn.get_extra())
-# boto = ConnS3(aws_access_key_id = None, aws_secret_access_key = None)
-# my_bucket = boto.s3_list_bucket()
-
-# LoggingMixin().log.info(my_bucket)
+boto = ConnS3(aws_access_key_id = Variable.get("aws_secret"), aws_secret_access_key = Variable.get("aws_key"))
+my_bucket = boto.s3_list_bucket()
+LoggingMixin().log.info(my_bucket)
