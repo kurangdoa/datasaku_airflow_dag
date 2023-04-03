@@ -31,8 +31,10 @@ class ConnS3:
 # conn = BaseHook.get_connection('aws_default')
 # LoggingMixin().log.info(conn.get_extra())
 
+LoggingMixin().log.info("variable get")
 aws_secret = Variable.get("AWS_SECRET")
 aws_key = Variable.get("AWS_KEY")
+# LoggingMixin().log.info("env get")
 # aws_secret = os.getenv("AIRFLOW_VAR_AWS_SECRET")
 # aws_key = os.getenv("AIRFLOW_VAR_AWS_KEY")
 LoggingMixin().log.info(aws_secret)
