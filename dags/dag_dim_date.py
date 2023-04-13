@@ -29,7 +29,7 @@ with DAG(
         , params = {'start_date' : '2023-01-01', 'end_date' : '2023-01-31', 'aws_secret' : AWS_SECRET, 'aws_key' : AWS_KEY}
         , env = {"start_date": "{{ params.start_date }}"
                  , "end_date": "{{ params.end_date }}"
-                 **os.environ
+                 , **os.environ
                  }
     )
 
