@@ -11,8 +11,8 @@ now_to_the_hour = (now - timedelta(0, 0, 0, 0, 0, 3)).replace(minute=0, second=0
 START_DATE = now_to_the_hour
 DAG_NAME = "dag_dim_date"
 
-aws_secret = Variable.get("AWS_SECRET")
-aws_key = Variable.get("AWS_KEY")
+AWS_SECRET = Variable.get("AWS_SECRET")
+AWS_KEY = Variable.get("AWS_KEY")
 
 with DAG(
     DAG_NAME,
@@ -20,6 +20,8 @@ with DAG(
     schedule="0 0 * * *",
     default_args={"depends_on_past": False},
     start_date=START_DATE,
+    aws_secret=AWS_SECRET,
+    aws_key=AWS_KEY,
     catchup=False,
 ):
     t1 = BashOperator(
