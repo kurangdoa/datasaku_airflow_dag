@@ -2,10 +2,6 @@ import pendulum
 from airflow import DAG
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.bash import BashOperator
-from airflow.models import Variable
-
-AWS_SECRET = Variable.get("AWS_SECRET")
-AWS_KEY = Variable.get("AWS_KEY")
 
 with DAG(
     dag_id = "test_bash_operator",
@@ -21,7 +17,7 @@ with DAG(
     task2 = EmptyOperator(task_id="task2")
     task3 = EmptyOperator(task_id="task3")
     op = BashOperator(task_id="dummy", bash_command='echo "hello world!"')
-    test = BashOperator(task_id="print_secret", bash_command='echo "print{{ var.value.AWS_SECRET }} {AWS_SECRET}"')
+    test = BashOperator(task_id="print_secret", bash_command='echo "print{{ var.value.AWS_SECRET }}"')
     print(op.retries)  # 2
 
     task1 >> [task2, task3]

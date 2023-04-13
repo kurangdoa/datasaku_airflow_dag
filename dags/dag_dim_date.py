@@ -4,6 +4,7 @@ from datetime import timedelta
 import pendulum
 import scripts.test_print_script as test_print_script
 from airflow.models import Variable
+import os
 
 now = pendulum.now(tz="UTC")
 now_to_the_hour = (now - timedelta(0, 0, 0, 0, 0, 3)).replace(minute=0, second=0, microsecond=0)
@@ -28,8 +29,8 @@ with DAG(
         , params = {'start_date' : '2023-01-01', 'end_date' : '2023-01-31', 'aws_secret' : AWS_SECRET, 'aws_key' : AWS_KEY}
         , env = {"start_date": "{{ params.start_date }}"
                  , "end_date": "{{ params.end_date }}"
-                 , "aws_secret": "{{ var.value.AWS_SECRET }}"
-                 , "aws_key": "{{ var.value.AWS_KEY }}"}
+                 **os.environ
+                 }
     )
 
     t1
