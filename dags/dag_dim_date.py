@@ -20,14 +20,12 @@ with DAG(
     schedule="0 0 * * *",
     default_args={"depends_on_past": False},
     start_date=START_DATE,
-    aws_secret=AWS_SECRET,
-    aws_key=AWS_KEY,
     catchup=False,
 ):
     t1 = BashOperator(
         task_id='task_dim_date'
         , bash_command="""python /opt/airflow/dags/repo/dags/scripts/dim_date.py"""
-        , params = {'start_date' : '2023-01-01', 'end_date' : '2023-01-31', 'aws_secret' : aws_secret, 'aws_key' : aws_key}
+        , params = {'start_date' : '2023-01-01', 'end_date' : '2023-01-31', 'aws_secret' : AWS_SECRET, 'aws_key' : AWS_KEY}
         , env = {"start_date": "{{ params.start_date }}"
                  , "end_date": "{{ params.end_date }}"
                  , "aws_secret": "{{ params.aws_secret }}"
