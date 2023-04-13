@@ -6,7 +6,7 @@ import pendulum
 import os
 from airflow.utils.log.logging_mixin import LoggingMixin
 from datasaku import datasaku_s3
-from airflow.models import Variable
+# from airflow.models import Variable
 
 def ordinal(num: int) -> str:
     """
@@ -421,8 +421,10 @@ def transform_date(start_date: str, end_date: str) -> pd.DataFrame:
 
 start_date = os.environ.get('start_date')
 end_date = os.environ.get('end_date')
-aws_secret = Variable.get("AWS_SECRET")
-aws_key = Variable.get("AWS_KEY")
+aws_secret = os.environ.get('AWS_SECRET')
+aws_key = os.environ.get('AWS_KEY')
+# aws_secret = Variable.get("AWS_SECRET")
+# aws_key = Variable.get("AWS_KEY")
 
 df = transform_date(start_date, end_date)
 
