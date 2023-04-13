@@ -6,6 +6,7 @@ import pendulum
 import os
 from airflow.utils.log.logging_mixin import LoggingMixin
 from datasaku import datasaku_s3
+from airflow.models import Variable
 
 def ordinal(num: int) -> str:
     """
