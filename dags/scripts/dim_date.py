@@ -5,6 +5,7 @@ import pandas as pd
 import pendulum
 import os
 from airflow.utils.log.logging_mixin import LoggingMixin
+from datasaku import datasaku_s3
 
 def ordinal(num: int) -> str:
     """
@@ -424,4 +425,12 @@ df = transform_date(start_date, end_date)
 
 LoggingMixin().log.info("start_date: %s", start_date)
 LoggingMixin().log.info("end_date: %s", end_date)
+LoggingMixin().log.info("sample dataset: ")
 LoggingMixin().log.info(df.head())
+
+aws_secret = Variable.get("AWS_SECRET")
+aws_key = Variable.get("AWS_KEY")
+boto = datasaku_s3.ConnS3(aws_access_key_id = aws_secret, aws_secret_access_key = aws_key)
+
+# upload the file
+boto.s3_upload_file('datasaku', 'self_generated_data/dim_date.parquet', df)
