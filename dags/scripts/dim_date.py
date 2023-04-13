@@ -421,16 +421,19 @@ def transform_date(start_date: str, end_date: str) -> pd.DataFrame:
 
 start_date = os.environ.get('start_date')
 end_date = os.environ.get('end_date')
+aws_secret = Variable.get("AWS_SECRET")
+aws_key = Variable.get("AWS_KEY")
 
 df = transform_date(start_date, end_date)
 
 LoggingMixin().log.info("start_date: %s", start_date)
 LoggingMixin().log.info("end_date: %s", end_date)
+LoggingMixin().log.info("variable get")
+LoggingMixin().log.info(aws_secret)
+LoggingMixin().log.info(aws_key)
 LoggingMixin().log.info("sample dataset: ")
 LoggingMixin().log.info(df.head())
 
-aws_secret = Variable.get("AWS_SECRET")
-aws_key = Variable.get("AWS_KEY")
 boto = datasaku_s3.ConnS3(aws_access_key_id = aws_secret, aws_secret_access_key = aws_key)
 
 # upload the file
