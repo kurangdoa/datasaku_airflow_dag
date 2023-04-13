@@ -17,7 +17,7 @@ with DAG(
     task2 = EmptyOperator(task_id="task2")
     task3 = EmptyOperator(task_id="task3")
     op = BashOperator(task_id="dummy", bash_command='echo "hello world!"')
-    test = BashOperator(task_id="dummy", bash_command='echo "{{ var.value.AWS_SECRET }}"')
+    test = BashOperator(task_id="print_secret", bash_command='echo "{{ var.value.AWS_SECRET }}"')
     print(op.retries)  # 2
 
     task1 >> [task2, task3]
