@@ -28,8 +28,8 @@ with DAG(
         , params = {'start_date' : '2023-01-01', 'end_date' : '2023-01-31', 'aws_secret' : AWS_SECRET, 'aws_key' : AWS_KEY}
         , env = {"start_date": "{{ params.start_date }}"
                  , "end_date": "{{ params.end_date }}"
-                 , "aws_secret": "{{ var.value.AWS_SECRET }}"
-                 , "aws_key": "{{ var.value.AWS_KEY }}"}
+                 , "aws_secret": "{{ var.value.AIRFLOW_VAR_AWS_SECRET }}"
+                 , "aws_key": "{{ var.value.AIRFLOW_VAR_AWS_KEY }}"}
     )
 
     t1
