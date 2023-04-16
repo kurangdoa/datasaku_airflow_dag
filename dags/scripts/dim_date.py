@@ -443,7 +443,7 @@ LoggingMixin().log.info(aws_key)
 LoggingMixin().log.info("sample dataset: ")
 LoggingMixin().log.info(df.head())
 
-boto = datasaku_s3.ConnS3(aws_access_key_id = aws_secret, aws_secret_access_key = aws_key, aws_session_token=None)
+boto = datasaku_s3.ConnS3(aws_access_key_id = aws_secret, aws_secret_access_key = aws_key)
 
 # upload the file
 boto.s3_upload_file('datasaku', 'self_generated_data/dim_date.parquet', df)
