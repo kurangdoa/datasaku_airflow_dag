@@ -443,38 +443,55 @@ LoggingMixin().log.info(aws_key)
 LoggingMixin().log.info("sample dataset: ")
 LoggingMixin().log.info(df.head())
 
-boto = datasaku_s3.ConnS3(aws_access_key_id = aws_secret, aws_secret_access_key = aws_key)
+# boto = datasaku_s3.ConnS3(aws_access_key_id = aws_secret, aws_secret_access_key = aws_key)
 
-# upload the file
+# # upload the file
+# boto.s3_upload_file('datasaku', 'self_generated_data/dim_date.parquet', df)
+
+class ConnS3:
+    """Class for S3"""
+    def __init__(self, aws_access_key_id, aws_secret_access_key, aws_session_token = None):
+        self.aws_id =  aws_access_key_id
+        self.aws_key = aws_secret_access_key
+        self.aws_token = aws_session_token
+
+        # create session
+        if (self.aws_id is not None) & (self.aws_key is not None):
+            self.s3_session = boto3.Session(
+                aws_access_key_id = self.aws_id,
+                aws_secret_access_key = self.aws_key,
+                aws_session_token = self.aws_token,
+            ) # create aws session if there is aws credential defined
+        else:
+            self.s3_session = boto3.Session() # create aws session using using environment detail 
+
+    def s3_list_bucket(self):
+        """list bucket inside s3"""
+        s3_resource = self.s3_session.resource('s3') # create s3 resource
+        buckets = [bucket.name for bucket in s3_resource.buckets.all()] # list down the bucket
+        return buckets
+
+    def s3_upload_file(self, s3_bucket_def, s3_file_def, df_def):
+        """list files inside bucket s3"""
+        s3_client = self.s3_session.client('s3') # create aws client
+        with io.BytesIO() as parquet_buffer:
+            df_def.to_parquet(parquet_buffer, index=False) # expoet pandas to parquet
+            response = s3_client.put_object(
+                Bucket = s3_bucket_def
+                , Key = s3_file_def
+                , Body = parquet_buffer.getvalue()
+                ) # put object inside bucket and file path
+            status = response.get("ResponseMetadata", {}).get("HTTPStatusCode")
+            if status == 200:
+                print(f"Successful S3 put_object response. Status - {status}") # status if success
+            else:
+                print(f"Unsuccessful S3 put_object response. Status - {status}") # status if not success
+
+
+# conn = BaseHook.get_connection('aws_default')
+# LoggingMixin().log.info(conn.get_extra())
+
+boto = ConnS3(aws_access_key_id = aws_secret, aws_secret_access_key = aws_key)
+my_bucket = boto.s3_list_bucket()
+LoggingMixin().log.info(my_bucket)
 boto.s3_upload_file('datasaku', 'self_generated_data/dim_date.parquet', df)
-
-# class ConnS3:
-#     """Class for S3"""
-#     def __init__(self, aws_access_key_id, aws_secret_access_key, aws_session_token = None):
-#         self.aws_id =  aws_access_key_id
-#         self.aws_key = aws_secret_access_key
-#         self.aws_token = aws_session_token
-
-#         # create session
-#         if (self.aws_id is not None) & (self.aws_key is not None):
-#             self.s3_session = boto3.Session(
-#                 aws_access_key_id = self.aws_id,
-#                 aws_secret_access_key = self.aws_key,
-#                 aws_session_token = self.aws_token,
-#             ) # create aws session if there is aws credential defined
-#         else:
-#             self.s3_session = boto3.Session() # create aws session using using environment detail 
-
-#     def s3_list_bucket(self):
-#         """list bucket inside s3"""
-#         s3_resource = self.s3_session.resource('s3') # create s3 resource
-#         buckets = [bucket.name for bucket in s3_resource.buckets.all()] # list down the bucket
-#         return buckets
-
-
-# # conn = BaseHook.get_connection('aws_default')
-# # LoggingMixin().log.info(conn.get_extra())
-
-# boto = ConnS3(aws_access_key_id = aws_secret, aws_secret_access_key = aws_key)
-# my_bucket = boto.s3_list_bucket()
-# LoggingMixin().log.info(my_bucket)
