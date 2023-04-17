@@ -7,6 +7,7 @@ import os
 from airflow.utils.log.logging_mixin import LoggingMixin
 from datasaku import datasaku_s3
 import boto3
+import io
 # from airflow.models import Variable
 
 def ordinal(num: int) -> str:
