@@ -2,9 +2,16 @@ from datasaku import datasaku_minio
 import os
 from airflow.utils.log.logging_mixin import LoggingMixin
 import pandas as pd
+from airflow.models import Variable
 
-minio_access = os.environ.get('MINIO_ACCESS')
-minio_secret = os.environ.get('MINIO_SECRET')
+minio_access = os.getenv("AIRFLOW_VAR_MINIO_ACCESS")
+minio_secret = os.getenv("AIRFLOW_VAR_MINIO_SECRET")
+LoggingMixin().log.info(minio_access)
+LoggingMixin().log.info(minio_secret)
+minio_access = Variable.get('MINIO_ACCESS')
+minio_secret = Variable.get('MINIO_SECRET')
+LoggingMixin().log.info(minio_access)
+LoggingMixin().log.info(minio_secret)
 
 minio = datasaku_minio.ConnMinio(
     minio_host = "127.0.0.1:9000",
@@ -12,8 +19,6 @@ minio = datasaku_minio.ConnMinio(
     minio_secret_key=minio_secret
 )
 
-LoggingMixin().log.info(minio_access)
-LoggingMixin().log.info(minio_secret)
 my_bucket = minio.minio_list_bucket()
 LoggingMixin().log.info(my_bucket)
 
