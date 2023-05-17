@@ -14,7 +14,7 @@ LoggingMixin().log.info(minio_access)
 LoggingMixin().log.info(minio_secret)
 
 minio = datasaku_minio.ConnMinio(
-    minio_host = "127.0.0.1:9000",
+    minio_host = "host.docker.internal:9000",
     minio_access_key=minio_access,
     minio_secret_key=minio_secret
 )
