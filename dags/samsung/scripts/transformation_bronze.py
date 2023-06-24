@@ -80,11 +80,14 @@ samsung.execute_query ("""CREATE SCHEMA IF NOT EXISTS test""")
 samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555, database = 'samsung')
 # samsung.pandas_to_sql(df = fct_bronze_google_analytics_flat, table_name = 'fct_bronze_google_analytics_flat', schema_name = 'bronze', if_exists_remark = 'replace')
 test = f"""
-COPY fct_bronze_google_analytics_flat FROM '{cwd}/train_flat.csv' 
+COPY fct_bronze_google_analytics_flat 
+FROM '{cwd}/train_flat.csv' 
 DELIMITER ',' 
 CSV HEADER;
 """
-samsung.execute_query (test)
+with samsung.engine.connect() as conn:
+    conn.execute(test)
+    conn.close()
 # samsung.pandas_to_sql(df = fct_bronze_google_analytics_flat, table_name = 'fct_bronze_google_analytics_flat', schema_name = 'bronze', if_exists_remark = 'replace')
 # samsung.pandas_to_sql(df = fct_bronze_google_analytics_filtered, table_name = 'fct_bronze_google_analytics_filtered', schema_name = 'bronze', if_exists_remark = 'replace')
 # samsung.pandas_to_sql(df = fct_bronze_google_analytics_category, table_name = 'fct_bronze_google_analytics_category', schema_name = 'bronze', if_exists_remark = 'replace')
