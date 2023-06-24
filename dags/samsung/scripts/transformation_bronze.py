@@ -27,6 +27,7 @@ train_flat = pd.read_csv('train_flat.csv')
 # Schema adjustment is done in Bronze layer as well to match organization fit.
 
 fct_bronze_google_analytics = train_flat.copy()
+print(fct_bronze_google_analytics.head())
 
 # based on data provided, there are two main dataset, flat and filtered
 # filtered dataset <> flat dataset (with filter) -- because there are records in filtered dataset that not exist in flat dataset
@@ -62,7 +63,7 @@ samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', us
 samsung.execute_create_database('samsung')
 samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555, database = 'samsung')
 samsung.execute_query ("""CREATE SCHEMA IF NOT EXISTS bronze""")
-# samsung.pandas_to_sql(df = fct_bronze_google_analytics, table_name = 'fct_bronze_google_analytics', schema_name = 'bronze', if_exists = 'replace')
+samsung.pandas_to_sql(df = fct_bronze_google_analytics, table_name = 'fct_bronze_google_analytics', schema_name = 'bronze', if_exists = 'replace')
 test = samsung.sql_to_pandas("""SELECT * FROM bronze.fct_bronze_google_analytics LIMIT 5;""")
 print(test.head())
 
