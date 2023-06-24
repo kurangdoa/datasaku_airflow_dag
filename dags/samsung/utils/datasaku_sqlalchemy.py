@@ -18,14 +18,14 @@ class sqlalchemy_class():
         print("port is", self.sqlalchemy_port)
         print("database is", self.sqlalchemy_database)
 
-    def pandas_to_sql(self, df, table_name, schema_name, if_exists='fail'):
+    def pandas_to_sql(self, df, table_name, schema_name, if_exists_remark='fail'):
         try:
             with self.engine.connect() as conn:
-                check = df.to_sql(table_name, con=conn, if_exists=if_exists, index= False, schema = schema_name)
-            if check == None:
-                info = "Table creation failed"
-            else:
-                info = "Table creation success"
+                check = df.to_sql(table_name, con=conn, if_exists=if_exists_remark, index= False, schema = schema_name, chunksize=10000)
+                if check == None:
+                    info = "Table creation failed"
+                else:
+                    info = "Table creation success"
         except:
             info = "Table creation failed"
         return print(info)
