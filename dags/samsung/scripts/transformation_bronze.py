@@ -1,5 +1,6 @@
 import sys
-sys.path.append('.')
+import sys
+sys.path.insert(1, '/opt/airflow/dags/repo/dags/samsung/')
 import utils.kaggle as kaggle
 import pandas as pd
 
