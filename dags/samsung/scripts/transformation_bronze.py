@@ -14,8 +14,7 @@ print('connection to kaggle')
 # os.environ['KAGGLE_KEY'] = Variable.get("KAGGLE_KEY")
 api = KaggleApi()
 api.authenticate()
-api.dataset_download_files('lipann/prepaired-data-of-customer-revenue-prediction', path = '/tmp')
-print(os.listdir('/tmp'))
+api.dataset_download_files('lipann/prepaired-data-of-customer-revenue-prediction')
 
 # df = pd.read_csv('prepaired-data-of-customer-revenue-prediction.zip', compression='zip')
 with zipfile.ZipFile("/tmp/prepaired-data-of-customer-revenue-prediction.zip") as zipf:
@@ -28,7 +27,7 @@ with zipfile.ZipFile("/tmp/prepaired-data-of-customer-revenue-prediction.zip") a
         f.write(content)
 
 # train_flat
-train_flat = pd.read_csv('/tmp/train_flat.csv')
+train_flat = pd.read_csv('train_flat.csv')
 
 ##### bronze layer #####
 
