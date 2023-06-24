@@ -67,6 +67,9 @@ fct_bronze_google_analytics_flat = train_flat.head(0)
 
 ##### save to sql database #####
 
+import os 
+print(os.listdir())
+
 print('saving to sql')
 samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555)
 samsung.execute_create_database('samsung')
