@@ -5,6 +5,7 @@ import pandas as pd
 from airflow.models import Variable
 from kaggle.api.kaggle_api_extended import KaggleApi
 import os
+import time
 
 # connection to kaggle
 print('connection to kaggle')
@@ -13,6 +14,7 @@ print('connection to kaggle')
 api = KaggleApi()
 api.authenticate()
 api.dataset_download_files('lipann/prepaired-data-of-customer-revenue-prediction', unzip=True)
+time.sleep(20)
 
 # train_flat
 train_flat = pd.read_csv('train_flat.csv')
