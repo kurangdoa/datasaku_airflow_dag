@@ -17,7 +17,7 @@ api.authenticate()
 api.dataset_download_files('lipann/prepaired-data-of-customer-revenue-prediction')
 
 # df = pd.read_csv('prepaired-data-of-customer-revenue-prediction.zip', compression='zip')
-with zipfile.ZipFile("/tmp/prepaired-data-of-customer-revenue-prediction.zip") as zipf:
+with zipfile.ZipFile("prepaired-data-of-customer-revenue-prediction.zip") as zipf:
    print(zipf.namelist())
    train_dataset = [s for s in zipf.namelist() if "train_" in s]
    for file in train_dataset:
