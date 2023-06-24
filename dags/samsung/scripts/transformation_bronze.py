@@ -69,6 +69,7 @@ fct_bronze_google_analytics_flat = train_flat.head(0)
 
 import os 
 print(os.listdir())
+print(os.getcwd())
 
 print('saving to sql')
 samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555)
@@ -76,15 +77,15 @@ samsung.execute_create_database('samsung')
 samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555, database = 'samsung')
 samsung.execute_query ("""CREATE SCHEMA IF NOT EXISTS bronze""")
 samsung.pandas_to_sql(df = fct_bronze_google_analytics_flat, table_name = 'fct_bronze_google_analytics_flat', schema_name = 'bronze', if_exists_remark = 'replace')
-query = """
-COPY bronze.fct_bronze_google_analytics_flat
-FROM 'train_flat.csv' 
-DELIMITER ',' 
-CSV HEADER;
-"""
-with samsung.engine.connect() as conn:
-    conn.execute(query)
-    conn.close()
-# samsung.pandas_to_sql(df = fct_bronze_google_analytics_flat, table_name = 'fct_bronze_google_analytics_flat', schema_name = 'bronze', if_exists_remark = 'replace')
+# query = """
+# COPY bronze.fct_bronze_google_analytics_flat
+# FROM 'train_flat.csv' 
+# DELIMITER ',' 
+# CSV HEADER;
+# """
+# with samsung.engine.connect() as conn:
+#     conn.execute(query)
+#     conn.close()
+samsung.pandas_to_sql(df = fct_bronze_google_analytics_flat, table_name = 'fct_bronze_google_analytics_flat', schema_name = 'bronze', if_exists_remark = 'replace')
 # samsung.pandas_to_sql(df = fct_bronze_google_analytics_filtered, table_name = 'fct_bronze_google_analytics_filtered', schema_name = 'bronze', if_exists_remark = 'replace')
 # samsung.pandas_to_sql(df = fct_bronze_google_analytics_category, table_name = 'fct_bronze_google_analytics_category', schema_name = 'bronze', if_exists_remark = 'replace')
