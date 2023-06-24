@@ -29,7 +29,7 @@ with zipfile.ZipFile("prepaired-data-of-customer-revenue-prediction.zip") as zip
 
 # train_flat
 train_flat = pd.read_csv('train_flat.csv')
-fct_bronze_google_analytics_flat = train_flat
+fct_bronze_google_analytics_flat = train_flat.head(0)
 
 # train_filtered = pd.read_csv('train_filtered.csv')
 # fct_bronze_google_analytics_filtered = train_filtered.copy()
@@ -73,5 +73,13 @@ samsung.execute_create_database('samsung')
 samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555, database = 'samsung')
 samsung.execute_query ("""CREATE SCHEMA IF NOT EXISTS bronze""")
 samsung.pandas_to_sql(df = fct_bronze_google_analytics_flat, table_name = 'fct_bronze_google_analytics_flat', schema_name = 'bronze', if_exists_remark = 'replace')
+query = """
+COPY fct_bronze_google_analytics_flat
+FROM 'train_flat.csv' 
+DELIMITER ',' 
+CSV HEADER;
+"""
+samsung.execute_query(query)
+# samsung.pandas_to_sql(df = fct_bronze_google_analytics_flat, table_name = 'fct_bronze_google_analytics_flat', schema_name = 'bronze', if_exists_remark = 'replace')
 # samsung.pandas_to_sql(df = fct_bronze_google_analytics_filtered, table_name = 'fct_bronze_google_analytics_filtered', schema_name = 'bronze', if_exists_remark = 'replace')
 # samsung.pandas_to_sql(df = fct_bronze_google_analytics_category, table_name = 'fct_bronze_google_analytics_category', schema_name = 'bronze', if_exists_remark = 'replace')
