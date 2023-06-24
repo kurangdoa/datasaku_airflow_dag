@@ -72,7 +72,10 @@ samsung.execute_create_database('samsung')
 samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555, database = 'samsung')
 # samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'localhost', username = 'postgres', port = 5555, database = 'samsung')
 samsung.execute_query ("""CREATE SCHEMA IF NOT EXISTS bronze""")
-samsung.pandas_to_sql(df = fct_bronze_google_analytics, table_name = 'fct_bronze_google_analytics', schema_name = 'bronze', if_exists = 'replace')
+
+conn_test = samsung.engine.connect()
+fct_bronze_google_analytics.to_sql('fct_bronze_google_analytics', con=conn_test, if_exists='replace', index= False, schema = 'bronze')
+# samsung.pandas_to_sql(df = fct_bronze_google_analytics, table_name = 'fct_bronze_google_analytics', schema_name = 'bronze', if_exists = 'replace')
 # test = samsung.sql_to_pandas("""SELECT * FROM bronze.fct_bronze_google_analytics LIMIT 5;""")
 # print(test.head())
 
