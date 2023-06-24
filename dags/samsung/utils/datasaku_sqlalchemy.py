@@ -62,7 +62,7 @@ class sqlalchemy_class():
         try:
             with self.engine.connect() as conn:
                 query = conn.execute(text(query_input))         
-                df = pd.DataFrame(query.fetchall())
+                result = pd.DataFrame(query.fetchall())
         except:
             print('Query execution failed')
-        return df
+        return result
