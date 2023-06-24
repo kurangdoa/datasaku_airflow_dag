@@ -29,13 +29,13 @@ with zipfile.ZipFile("prepaired-data-of-customer-revenue-prediction.zip") as zip
 
 # train_flat
 train_flat = pd.read_csv('train_flat.csv')
-fct_bronze_google_analytics_flat = train_flat
+fct_bronze_google_analytics_flat = train_flat.copy()
 
 train_filtered = pd.read_csv('train_filtered.csv')
-fct_bronze_google_analytics_filtered = train_filtered
+fct_bronze_google_analytics_filtered = train_filtered.copy()
 
 train_category = pd.read_csv('train_categorial_features_moda.csv')
-fct_bronze_google_analytics_category = train_category
+fct_bronze_google_analytics_category = train_category.copy()
 
 # based on data provided, there are two main dataset, flat and filtered
 # filtered dataset <> flat dataset (with filter) -- because there are records in filtered dataset that not exist in flat dataset
