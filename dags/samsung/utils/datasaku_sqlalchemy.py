@@ -9,7 +9,7 @@ class sqlalchemy_class():
         self.sqlalchemy_host = host
         self.sqlalchemy_port = port
         self.sqlalchemy_database = database
-        self.engine = sqlalchemy.create_engine(f'postgresql://{username}:{password}@{host}:{port}/{database}', fast_executemany=True)
+        self.engine = sqlalchemy.create_engine(f'postgresql://{username}:{password}@{host}:{port}/{database}')
 
     def show(self):
         print("username is", self.sqlalchemy_username)
@@ -19,8 +19,8 @@ class sqlalchemy_class():
         print("database is", self.sqlalchemy_database)
 
     def pandas_to_sql(self, df, table_name, schema_name, if_exists_remark='fail'):
-        with self.engine.connect() as conn:
-            df.to_sql(table_name, con=conn, if_exists=if_exists_remark, index= False, schema = schema_name, chunksize=10000, method="multi")
+        with self.engine as engine:
+            df.to_sql(table_name, con=engine, if_exists=if_exists_remark, index= False, schema = schema_name, chunksize=5000)
     
     def execute_create_database(self, database_name):
         try:
