@@ -1,3 +1,5 @@
+import sys
+sys.path.append('.')
 import utils.kaggle as kaggle
 import pandas as pd
 
