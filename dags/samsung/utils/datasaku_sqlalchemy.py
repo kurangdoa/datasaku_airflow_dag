@@ -35,6 +35,7 @@ class sqlalchemy_class():
                 sql = f"""CREATE DATABASE {database_name}"""
                 conn.execution_options(isolation_level="AUTOCOMMIT").execute(text(sql))
                 info = "Database created successfully"
+                conn.close()
         except:
             info = "Database creation failed / Database already exist"
         return print(info)
@@ -45,6 +46,7 @@ class sqlalchemy_class():
                 sql = f"""DROP DATABASE IF EXISTS {database_name};"""
                 conn.execution_options(isolation_level="AUTOCOMMIT").execute(text(sql))
                 info = "Database deleted successfully"
+                conn.close()
         except:
             info = "Database deletion failed"
         return print(info)
@@ -54,6 +56,7 @@ class sqlalchemy_class():
             with self.engine.connect() as conn:
                 conn.execute(query)
                 info ="Query executed successfully"
+                conn.close()
         except:
             info = "Query execution failed"
         return print(info)
@@ -61,5 +64,6 @@ class sqlalchemy_class():
     def sql_to_pandas(self, query):
         with self.engine.connect() as conn:
             query = conn.execute(text(query))         
-        df = pd.DataFrame(query.fetchall())
+            df = pd.DataFrame(query.fetchall())
+            conn.close()
         return df
