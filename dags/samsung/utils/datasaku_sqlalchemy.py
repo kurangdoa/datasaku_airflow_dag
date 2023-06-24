@@ -19,7 +19,8 @@ class sqlalchemy_class():
         print("database is", self.sqlalchemy_database)
 
     def pandas_to_sql(self, df, table_name, schema_name, if_exists_remark='fail'):
-        df.to_sql(table_name, con=self.engine, if_exists=if_exists_remark, index= False, schema = schema_name, chunksize=10000)
+        with self.engine as engine:
+            df.to_sql(table_name, con=engine, if_exists=if_exists_remark, index= False, schema = schema_name, chunksize=10000, method="multi")
     
     def execute_create_database(self, database_name):
         try:
