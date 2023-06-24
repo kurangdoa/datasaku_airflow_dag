@@ -1,8 +1,9 @@
 import sys
-sys.path.insert(1, '/opt/airflow/dags/repo/dags/samsung/')
+#sys.path.insert(1, '/opt/airflow/dags/repo/dags/samsung/')
+sys.path.insert(1, '/Users/rhyando.anggoro-adi/Library/CloudStorage/OneDrive-Personal/code/helm/airflow_custom/datasaku_airflow_dag/dags/samsung')
 import utils.datasaku_sqlalchemy as datasaku_sqlalchemy
 import pandas as pd
-from airflow.models import Variable
+# from airflow.models import Variable
 from kaggle.api.kaggle_api_extended import KaggleApi
 import os
 import time
@@ -13,18 +14,18 @@ print('connection to kaggle')
 # os.environ['KAGGLE_KEY'] = Variable.get("KAGGLE_KEY")
 api = KaggleApi()
 api.authenticate()
-api.dataset_download_files('lipann/prepaired-data-of-customer-revenue-prediction', unzip=True)
+api.dataset_download_files('lipann/prepaired-data-of-customer-revenue-prediction', path = '/tmp', unzip=True)
 time.sleep(20)
 
 # train_flat
-train_flat = pd.read_csv('train_flat.csv')
+train_flat = pd.read_csv('/tmp/train_flat.csv')
 
 ##### bronze layer #####
 
 # Bronze layer is the layer as close as possible to the raw data for troubleshooting purpose
 # Schema adjustment is done in Bronze layer as well to match organization fit.
 
-fct_bronze_google_analytics = train_flat.copy()
+fct_bronze_google_analytics = train_flat
 
 # based on data provided, there are two main dataset, flat and filtered
 # filtered dataset <> flat dataset (with filter) -- because there are records in filtered dataset that not exist in flat dataset
