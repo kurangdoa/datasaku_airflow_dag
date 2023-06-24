@@ -64,5 +64,5 @@ class sqlalchemy_class():
                 query = conn.execute(text(query_input))         
                 result = pd.DataFrame(query.fetchall())
         except:
-            print('Query execution failed')
+            return print('Query execution failed')
         return result
