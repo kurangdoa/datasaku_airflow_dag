@@ -1,5 +1,6 @@
 import sqlalchemy
 from sqlalchemy.sql import text
+import pandas as pd
 
 class sqlalchemy_class():
     def __init__(self, username, password=None, host='localhost', port=5432, database='postgres'):
@@ -61,7 +62,7 @@ class sqlalchemy_class():
         try:
             with self.engine.connect() as conn:
                 query = conn.execute(text(query))         
-            df = pd.DataFrame(query.fetchall())
+                df = pd.DataFrame(query.fetchall())
         except:
             print('Query execution failed')
         return df
