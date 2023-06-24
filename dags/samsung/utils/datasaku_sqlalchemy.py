@@ -58,10 +58,10 @@ class sqlalchemy_class():
             info = "Query execution failed"
         return print(info)
 
-    def sql_to_pandas(self, query):
+    def sql_to_pandas(self, query_input):
         try:
             with self.engine.connect() as conn:
-                query = conn.execute(text(query))         
+                query = conn.execute(text(query_input))         
                 df = pd.DataFrame(query.fetchall())
         except:
             print('Query execution failed')
