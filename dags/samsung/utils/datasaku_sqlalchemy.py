@@ -22,7 +22,7 @@ class sqlalchemy_class():
         import time
         try:
             with self.engine.connect() as conn:
-                check = df.to_sql(table_name, con=conn, if_exists=if_exists_remark, index= False, schema = schema_name, chunksize=100000, method='multi')
+                check = df.to_sql(table_name, con=conn, if_exists=if_exists_remark, index= False, schema = schema_name, max_overflow=-1, pool_size=100, pool_timeout=1000)
                 time.sleep(10)
                 if check == None:
                     info = "Table creation failed"

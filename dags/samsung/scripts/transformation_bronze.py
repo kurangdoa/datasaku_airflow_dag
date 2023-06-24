@@ -76,10 +76,11 @@ samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', us
 samsung.execute_create_database('samsung')
 samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555, database = 'samsung')
 samsung.execute_query ("""CREATE SCHEMA IF NOT EXISTS bronze""")
+samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555, database = 'samsung', schema = 'bronze')
 # samsung.pandas_to_sql(df = fct_bronze_google_analytics_flat, table_name = 'fct_bronze_google_analytics_flat', schema_name = 'bronze', if_exists_remark = 'replace')
 query = f"""
-COPY bronze.fct_bronze_google_analytics_flat
-FROM 'tmp/train_flat.csv' 
+COPY "samsung.bronze.fct_bronze_google_analytics_flat"
+FROM '{cwd}/train_flat.csv' 
 DELIMITER ',' 
 CSV HEADER;
 """
