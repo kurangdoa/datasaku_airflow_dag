@@ -82,7 +82,9 @@ FROM 'train_flat.csv'
 DELIMITER ',' 
 CSV HEADER;
 """
-samsung.execute_query(query)
+with samsung.connect() as conn:
+    conn.execute(query)
+    conn.close()
 # samsung.pandas_to_sql(df = fct_bronze_google_analytics_flat, table_name = 'fct_bronze_google_analytics_flat', schema_name = 'bronze', if_exists_remark = 'replace')
 # samsung.pandas_to_sql(df = fct_bronze_google_analytics_filtered, table_name = 'fct_bronze_google_analytics_filtered', schema_name = 'bronze', if_exists_remark = 'replace')
 # samsung.pandas_to_sql(df = fct_bronze_google_analytics_category, table_name = 'fct_bronze_google_analytics_category', schema_name = 'bronze', if_exists_remark = 'replace')
