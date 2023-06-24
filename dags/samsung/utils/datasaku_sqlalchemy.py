@@ -9,7 +9,7 @@ class sqlalchemy_class():
         self.sqlalchemy_host = host
         self.sqlalchemy_port = port
         self.sqlalchemy_database = database
-        self.engine = sqlalchemy.create_engine(f'postgresql://{username}:{password}@{host}:{port}/{database}')
+        self.engine = sqlalchemy.create_engine(f'postgresql://{username}:{password}@{host}:{port}/{database}', max_overflow=-1, pool_size=100, pool_timeout=300)
 
     def show(self):
         print("username is", self.sqlalchemy_username)
@@ -22,7 +22,7 @@ class sqlalchemy_class():
         import time
         try:
             with self.engine.connect() as conn:
-                check = df.to_sql(table_name, con=conn, if_exists=if_exists_remark, index= False, schema = schema_name, pool_timeout=1000)
+                check = df.to_sql(table_name, con=conn, if_exists=if_exists_remark, index= False, schema = schema_name)
                 time.sleep(10)
                 if check == None:
                     info = "Table creation failed"
