@@ -1,22 +1,17 @@
 import sys
 sys.path.insert(1, '/opt/airflow/dags/repo/dags/samsung/')
-#sys.path.insert(1, '/Users/rhyando.anggoro-adi/Library/CloudStorage/OneDrive-Personal/code/helm/airflow_custom/datasaku_airflow_dag/dags/samsung')
 import utils.datasaku_sqlalchemy as datasaku_sqlalchemy
 import pandas as pd
-# from airflow.models import Variable
 from kaggle.api.kaggle_api_extended import KaggleApi
-import os
 import zipfile
 
 # connection to kaggle
 print('connection to kaggle')
-# os.environ['KAGGLE_USERNAME'] = Variable.get("KAGGLE_USERNAME")
-# os.environ['KAGGLE_KEY'] = Variable.get("KAGGLE_KEY")
 api = KaggleApi()
 api.authenticate()
 api.dataset_download_files('lipann/prepaired-data-of-customer-revenue-prediction')
 
-# df = pd.read_csv('prepaired-data-of-customer-revenue-prediction.zip', compression='zip')
+# unzip file
 with zipfile.ZipFile("prepaired-data-of-customer-revenue-prediction.zip") as zipf:
    print(zipf.namelist())
    train_dataset = [s for s in zipf.namelist() if "train_" in s]
@@ -26,16 +21,20 @@ with zipfile.ZipFile("prepaired-data-of-customer-revenue-prediction.zip") as zip
         f = open(file, 'wb')
         f.write(content)
 
-# train_flat
-train_flat = pd.read_csv('train_flat.csv')
-print(train_flat.head())
-
 ##### bronze layer #####
 
 # Bronze layer is the layer as close as possible to the raw data for troubleshooting purpose
 # Schema adjustment is done in Bronze layer as well to match organization fit.
 
-fct_bronze_google_analytics = train_flat
+# train_flat
+train_flat = pd.read_csv('train_flat.csv')
+fct_bronze_google_analytics_flat = train_flat
+
+train_filtered = pd.read_csv('train_filtered.csv')
+fct_bronze_google_analytics_filtered = train_filtered
+
+train_category = pd.read_csv('train_categorial_features_moda.csv')
+fct_bronze_google_analytics_category = train_category
 
 # based on data provided, there are two main dataset, flat and filtered
 # filtered dataset <> flat dataset (with filter) -- because there are records in filtered dataset that not exist in flat dataset
@@ -65,17 +64,13 @@ fct_bronze_google_analytics = train_flat
 #  'trafficSource_adwordsClickInfo.gclId',
 #  'trafficSource_campaignCode'
 
-##### save to sql #####
+##### save to sql database #####
+
 print('saving to sql')
 samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555)
 samsung.execute_create_database('samsung')
 samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555, database = 'samsung')
-# samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'localhost', username = 'postgres', port = 5555, database = 'samsung')
 samsung.execute_query ("""CREATE SCHEMA IF NOT EXISTS bronze""")
-
-# with samsung.engine.connect() as conn:
-#     fct_bronze_google_analytics.to_sql('fct_bronze_google_analytics', con=conn, if_exists='replace', index= False, schema = 'bronze', chunksize=10000)
-samsung.pandas_to_sql(df = fct_bronze_google_analytics, table_name = 'fct_bronze_google_analytics', schema_name = 'bronze', if_exists_remark = 'replace')
-test = samsung.sql_to_pandas("""SELECT * FROM bronze.fct_bronze_google_analytics LIMIT 5;""")
-print(test.head())
-
+samsung.pandas_to_sql(df = fct_bronze_google_analytics_flat, table_name = 'fct_bronze_google_analytics_flat', schema_name = 'bronze', if_exists_remark = 'replace')
+samsung.pandas_to_sql(df = fct_bronze_google_analytics_filtered, table_name = 'fct_bronze_google_analytics_filtered', schema_name = 'bronze', if_exists_remark = 'replace')
+samsung.pandas_to_sql(df = fct_bronze_google_analytics_category, table_name = 'fct_bronze_google_analytics_category', schema_name = 'bronze', if_exists_remark = 'replace')
