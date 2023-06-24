@@ -20,7 +20,8 @@ class sqlalchemy_class():
 
     def pandas_to_sql(self, df, table_name, schema_name, if_exists='fail'):
         try:
-            check = df.to_sql(table_name, con=self.engine, if_exists=if_exists, index= False, schema = schema_name)
+            with self.engine.connect() as conn:
+                check = df.to_sql(table_name, con=conn, if_exists=if_exists, index= False, schema = schema_name)
             if check == None:
                 info = "Table creation failed"
             else:
