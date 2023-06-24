@@ -1,12 +1,13 @@
 import sys
 sys.path.insert(1, '/opt/airflow/dags/repo/dags/samsung/')
-#sys.path.insert(1, '/Users/rhyando.anggoro-adi/Library/CloudStorage/OneDrive-Personal/code/helm/airflow_custom/datasaku_airflow_dag/dags/samsung')
+# sys.path.insert(1, '/Users/rhyando.anggoro-adi/Library/CloudStorage/OneDrive-Personal/code/helm/airflow_custom/datasaku_airflow_dag/dags/samsung')
 import utils.datasaku_sqlalchemy as datasaku_sqlalchemy
 import pandas as pd
 # from airflow.models import Variable
 from kaggle.api.kaggle_api_extended import KaggleApi
 import os
 import time
+import zipfile
 
 # connection to kaggle
 print('connection to kaggle')
@@ -14,8 +15,18 @@ print('connection to kaggle')
 # os.environ['KAGGLE_KEY'] = Variable.get("KAGGLE_KEY")
 api = KaggleApi()
 api.authenticate()
-api.dataset_download_files('lipann/prepaired-data-of-customer-revenue-prediction', path = '/tmp', unzip=True)
+api.dataset_download_files('lipann/prepaired-data-of-customer-revenue-prediction', path = '/tmp')
 print(os.listdir('/tmp'))
+
+# df = pd.read_csv('prepaired-data-of-customer-revenue-prediction.zip', compression='zip')
+with zipfile.ZipFile("/tmp/prepaired-data-of-customer-revenue-prediction.zip") as zipf:
+   print(zipf.namelist())
+   train_dataset = [s for s in zipf.namelist() if "train_" in s]
+   for file in train_dataset:
+      with zipf.open(file) as f:
+        content = f.read()
+        f = open(file, 'wb')
+        f.write(content)
 
 # train_flat
 train_flat = pd.read_csv('/tmp/train_flat.csv')
@@ -60,6 +71,7 @@ print('saving to sql')
 # samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555)
 # samsung.execute_create_database('samsung')
 samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555, database = 'samsung')
+# samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'localhost', username = 'postgres', port = 5555, database = 'samsung')
 samsung.execute_query ("""CREATE SCHEMA IF NOT EXISTS bronze""")
 samsung.pandas_to_sql(df = fct_bronze_google_analytics, table_name = 'fct_bronze_google_analytics', schema_name = 'bronze', if_exists = 'replace')
 test = samsung.sql_to_pandas("""SELECT * FROM bronze.fct_bronze_google_analytics LIMIT 5;""")
