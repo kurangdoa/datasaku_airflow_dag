@@ -1,24 +1,30 @@
-import pendulum
 from airflow import DAG
-from airflow.operators.empty import EmptyOperator
 from airflow.operators.bash import BashOperator
+from datetime import timedelta
+import pendulum
+from airflow.models import Variable
+import os
+
+now = pendulum.now(tz="UTC")
+now_to_the_hour = (now - timedelta(0, 0, 0, 0, 0, 3)).replace(minute=0, second=0, microsecond=0)
+# start date to be recent one and should be executed on the same day
+START_DATE = now_to_the_hour
+DAG_NAME = "dag_samsung_bronze"
+
+AWS_SECRET = Variable.get("AWS_SECRET")
+AWS_KEY = Variable.get("AWS_KEY")
 
 with DAG(
-    dag_id = "test_bash_operator_inside_folder",
-    start_date = pendulum.datetime(2023, 3, 1),
+    DAG_NAME,
     # run every hour
-    schedule = "0 0 * * *",
-    # default arguments to be used in every task
-    default_args = {"retries": 2},
-    # make sure it does not run the backfill
-    catchup = False,
+    schedule="0 0 * * *",
+    default_args={"depends_on_past": False},
+    start_date=START_DATE,
+    catchup=False,
 ):
-    task1 = EmptyOperator(task_id="task1")
-    task2 = EmptyOperator(task_id="task2")
-    task3 = EmptyOperator(task_id="task3")
-    op = BashOperator(task_id="dummy", bash_command='echo "hello world!"')
-    test = BashOperator(task_id="print_secret", bash_command='echo "print{{ var.value.AWS_SECRET }}"')
-    print(op.retries)  # 2
+    t1 = BashOperator(
+        task_id='task_samsung_bronze'
+        , bash_command="""python /opt/airflow/dags/repo/dags/samsung/scripts/transformation_bronze.py"""
+    )
 
-    task1 >> [task2, task3]
-    task3 >> op >> test
+    t1
