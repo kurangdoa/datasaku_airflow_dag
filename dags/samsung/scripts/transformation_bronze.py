@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(1, '/Users/rhyando.anggoro-adi/Library/CloudStorage/OneDrive-Personal/code/helm/airflow_custom/datasaku_airflow_dag/dags/samsung')
+sys.path.insert(1, '/opt/airflow/dags/repo/dags/samsung/')
 import utils.kaggle as kaggle
 import pandas as pd
 from airflow.models import Variable
