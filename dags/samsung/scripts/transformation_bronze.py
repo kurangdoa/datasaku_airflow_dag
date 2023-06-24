@@ -7,6 +7,7 @@ from kaggle.api.kaggle_api_extended import KaggleApi
 import os
 
 # connection to kaggle
+print('connection to kaggle')
 os.environ['KAGGLE_USERNAME'] = Variable.get("KAGGLE_USERNAME")
 os.environ['KAGGLE_KEY'] = Variable.get("KAGGLE_KEY")
 api = KaggleApi()
@@ -56,11 +57,12 @@ fct_bronze_google_analytics = train_flat.copy()
 #  'trafficSource_campaignCode'
 
 ##### save to sql #####
+print('saving to sql')
 samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555)
 samsung.execute_create_database('samsung')
 samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555, database = 'samsung')
 samsung.execute_query ("""CREATE SCHEMA IF NOT EXISTS bronze""")
-samsung.pandas_to_sql(df = fct_bronze_google_analytics, table_name = 'fct_bronze_google_analytics', schema_name = 'bronze', if_exists = 'replace')
+# samsung.pandas_to_sql(df = fct_bronze_google_analytics, table_name = 'fct_bronze_google_analytics', schema_name = 'bronze', if_exists = 'replace')
 test = samsung.sql_to_pandas("""SELECT * FROM bronze.fct_bronze_google_analytics LIMIT 5;""")
 print(test.head())
 
