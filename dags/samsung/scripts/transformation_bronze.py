@@ -15,7 +15,7 @@ print('connection to kaggle')
 api = KaggleApi()
 api.authenticate()
 api.dataset_download_files('lipann/prepaired-data-of-customer-revenue-prediction', path = '/tmp', unzip=True)
-time.sleep(20)
+print(os.listdir('/tmp'))
 
 # train_flat
 train_flat = pd.read_csv('/tmp/train_flat.csv')
