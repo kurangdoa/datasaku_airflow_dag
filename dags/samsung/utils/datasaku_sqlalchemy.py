@@ -9,7 +9,7 @@ class sqlalchemy_class():
         self.sqlalchemy_host = host
         self.sqlalchemy_port = port
         self.sqlalchemy_database = database
-        self.engine = sqlalchemy.create_engine(f'postgresql+psycopg2://{username}:{password}@{host}:{port}/{database}')
+        self.engine = sqlalchemy.create_engine(f'postgresql://{username}:{password}@{host}:{port}/{database}')
 
     def show(self):
         print("username is", self.sqlalchemy_username)
