@@ -28,7 +28,7 @@ fct_bronze_google_analytics = train_flat.copy()
 
 # based on data provided, there are two main dataset, flat and filtered
 # filtered dataset <> flat dataset (with filter) -- because there are records in filtered dataset that not exist in flat dataset
-# for example 7530866178634633311
+# for example fullvisitorid 7530866178634633311
 # decided to use flat dataset as main dataset because of long term reason of column availability compared to filtered dataset such as 
 #  'sessionId',
 #  'socialEngagementType',
@@ -56,8 +56,8 @@ fct_bronze_google_analytics = train_flat.copy()
 
 ##### save to sql #####
 print('saving to sql')
-samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555)
-samsung.execute_create_database('samsung')
+# samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555)
+# samsung.execute_create_database('samsung')
 samsung = datasaku_sqlalchemy.sqlalchemy_class(host = 'host.docker.internal', username = 'postgres', port = 5555, database = 'samsung')
 samsung.execute_query ("""CREATE SCHEMA IF NOT EXISTS bronze""")
 samsung.pandas_to_sql(df = fct_bronze_google_analytics, table_name = 'fct_bronze_google_analytics', schema_name = 'bronze', if_exists = 'replace')
