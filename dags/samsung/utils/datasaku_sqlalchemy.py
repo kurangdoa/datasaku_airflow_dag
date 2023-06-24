@@ -36,7 +36,7 @@ class sqlalchemy_class():
                 conn.execution_options(isolation_level="AUTOCOMMIT").execute(text(sql))
                 info = "Database created successfully"
         except:
-            info = "Database creation failed"
+            info = "Database creation failed / Database already exist"
         return print(info)
     
     def execute_drop_database(self, database_name):
