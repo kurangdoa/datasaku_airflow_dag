@@ -21,7 +21,7 @@ class sqlalchemy_class():
     def pandas_to_sql(self, df, table_name, schema_name, if_exists_remark='fail'):
         try:
             with self.engine.connect() as conn:
-                check = df.to_sql(table_name, con=conn, if_exists=if_exists_remark, index= False, schema = schema_name, chunksize=10000)
+                check = df.to_sql(table_name, con=conn, if_exists=if_exists_remark, index= False, schema = schema_name, chunksize=500000)
                 if check == None:
                     info = "Table creation failed"
                 else:
