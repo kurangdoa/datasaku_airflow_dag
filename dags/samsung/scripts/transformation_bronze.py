@@ -5,14 +5,26 @@ import pandas as pd
 from airflow.models import Variable
 from kaggle.api.kaggle_api_extended import KaggleApi
 import os
+import zipfile
 
 # connection to kaggle
 print('connection to kaggle')
-os.environ['KAGGLE_USERNAME'] = Variable.get("KAGGLE_USERNAME")
-os.environ['KAGGLE_KEY'] = Variable.get("KAGGLE_KEY")
+# os.environ['KAGGLE_USERNAME'] = Variable.get("KAGGLE_USERNAME")
+# os.environ['KAGGLE_KEY'] = Variable.get("KAGGLE_KEY")
 api = KaggleApi()
 api.authenticate()
-api.dataset_download_files('lipann/prepaired-data-of-customer-revenue-prediction', unzip=True)
+api.dataset_download_files('lipann/prepaired-data-of-customer-revenue-prediction')
+
+# unzip the file
+# df = pd.read_csv('prepaired-data-of-customer-revenue-prediction.zip', compression='zip')
+with zipfile.ZipFile("prepaired-data-of-customer-revenue-prediction.zip") as zipf:
+   print(zipf.namelist())
+   train_dataset = [s for s in zipf.namelist() if "train_" in s]
+   for file in train_dataset:
+      with zipf.open(file) as f:
+        content = f.read()
+        f = open(file, 'wb')
+        f.write(content)
 
 # moda means the categorical feature stated as integer 
 bronze_train_categorical_features_moda = pd.read_csv('train_categorial_features_moda.csv')
